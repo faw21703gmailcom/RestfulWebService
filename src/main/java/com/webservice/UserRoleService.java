@@ -32,8 +32,7 @@ import com.webservice.util.GsonInfoUtil;
 import com.webservice.util.GsonUtilInterface;
 
 /**
- * A simple REST service which is able to say hello to someone using HelloService Please take a look at the web.xml where JAX-RS
- * is enabled
+ * A simple REST service to manager user role information with JAX-RS
  */
 
 @Path("/role")
@@ -55,20 +54,5 @@ public class UserRoleService {
 	   
 	    return Response.ok(response).build();
     }
-
-    @GET
-    @Path("json")
-    @Produces({ "application/json" })
-    public String getHelloWorldJSON() {
-        return "{\"result\":\"" + "OK" + "\"}";
-    }
-
-    @GET
-    @Path("xml")
-    @Produces({ "application/xml" })
-    public String getHelloWorldXML() {
-        return "<xml><result>" + "OK" + "</result></xml>";
-    }
-    
 
 }

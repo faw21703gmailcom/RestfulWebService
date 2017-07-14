@@ -13,7 +13,12 @@ public class Manager {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		
-	    session.save(obj);
+		try {
+			session.save(obj);
+		}
+		catch (Exception ex) {
+			response = ex.getMessage();
+		}
 	    
 	    if (!tx.wasCommitted()) { 
 	        tx.commit();
@@ -27,7 +32,12 @@ public class Manager {
 		String response = "";
 		Transaction tx = session.beginTransaction();
 		
-		session.update(obj);
+		try {
+			session.update(obj);
+		}
+		catch (Exception ex) {
+			response = ex.getMessage();
+		}
 		
 		if (!tx.wasCommitted()) { 
 	        tx.commit();

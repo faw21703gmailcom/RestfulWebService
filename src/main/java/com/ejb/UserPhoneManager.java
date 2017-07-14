@@ -53,10 +53,13 @@ public class UserPhoneManager extends Manager {
 	    	query.setParameter("userId", userId);
 	    	
 	    	List<UserPhone> userPhones = query.list();
-	   
-	    	for (UserPhone userPhone : userPhones) {
-	    		response += deleteItem(userPhone, session);
-	    	}
+	    
+	    	if (userPhones != null && userPhones.size() > 0)
+		    	for (UserPhone userPhone : userPhones) {
+		    		response += deleteItem(userPhone, session);
+		    	}
+	    	else 
+	    		response = "No phone exists with user id of '" + userId + "' and phone type of '" + phoneType + "'";
 	    
 	    session.close();
 	    	return response;
@@ -72,7 +75,7 @@ public class UserPhoneManager extends Manager {
 	    	
 	    	List<UserPhone> userPhones = query.list();
 	   
-	    	if (userPhones.size() > 0)
+	    	if (userPhones != null && userPhones.size() > 0)
 		    	for (UserPhone userPhone : userPhones) {
 		    		userPhone.setType(phoneType);
 		    		response += updateItem(userPhone, session);
@@ -85,11 +88,14 @@ public class UserPhoneManager extends Manager {
 	    
 		List<UserPhone> userPhonesType = query.list();
 		   
-	    	if (userPhonesType.size() > 0)
+	    	if (userPhonesType != null && userPhonesType.size() > 0)
 		    	for (UserPhone userPhone : userPhonesType) {
 		    		userPhone.setPhoneNumber(phoneNumber);
 		    		response += updateItem(userPhone, session);
 		    	}
+	    	
+	    	if (!((userPhones != null && userPhones.size() > 0) || (userPhonesType != null && userPhonesType.size() > 0)))
+	    		response = "No phone exists with user id of '" + userId + "' and phone type of '" + phoneType + "' or phone number of '" + phoneNumber + "'";
 	    
 	    session.close();
 	    	return response;

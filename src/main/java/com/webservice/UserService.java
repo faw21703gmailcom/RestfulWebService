@@ -31,12 +31,11 @@ import com.entity.User;
 import com.google.gson.JsonParser;
 import com.webservice.util.GsonUserUtil;
 import com.webservice.util.GsonUtilInterface;
-import com.webservice.util.UserDeserializer;
+import com.webservice.util.UserUtil;
 
 
 /**
- * A simple REST service which is able to say hello to someone using HelloService Please take a look at the web.xml where JAX-RS
- * is enabled
+ * A simple REST service to manager user information with JAX-RS
  */
 
 @Path("/user")
@@ -65,13 +64,14 @@ public class UserService {
 	    	String response = "";
 	    	UserManager userManager = new UserManager();
 	    User user = userManager.getUserByName(userName);
-	    	GsonUtilInterface gUtil = new GsonUserUtil();
-	    
-	    	if (user != null)
+
+	    	if (user != null) {
+	    	 	GsonUtilInterface gUtil = new GsonUserUtil();
 	    		response = gUtil.toJsonString(user);
+	    	}
 	    	else 
-	    		response = "User with userName of \"" + userName + "\" does not exist.";
-	    	
+	    		response = UserUtil.jsonBuilder("User with userName of '" + userName + "' does not exist.");
+	   
 	    return Response.ok(response).build();
     }
 
@@ -90,13 +90,19 @@ public class UserService {
 	    	User user = gson.fromJson(userJson, User.class);
 	    	*/
 	    	
-	    	User user = UserDeserializer.deserialize(new JsonParser().parse(userJson));
-	   
-		
-	    	UserManager userManager = new UserManager();
-	    	response = userManager.addItem(user);
+	    	User user = UserUtil.deserialize(new JsonParser().parse(userJson));
 
-	    return Response.ok(response).build();
+	    	if (user != null) {
+	    	 	UserManager userManager = new UserManager();
+	    		response = userManager.addItem(user);
+	    		return Response.ok(UserUtil.jsonBuilder(response)).build();
+	    	}
+	    	else {
+	    		response = "Information provided for the new user is not sufficient";
+	    		return Response.status(403).type("text/plain")
+	                    .entity(UserUtil.jsonBuilder(response)).build();
+	    	}
+	    	
     }
     
     

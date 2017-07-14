@@ -13,7 +13,9 @@
 function addNewUser() {
 	var ItemJSON;
 
-    ItemJSON = '{"userId":1000,"userName":"d","password":"4","email":"d@e","userRoles":[{"userRoleId":1000,"user":"0x1","roleName":"labler"},{"userRoleId":1001,"user":"0x1","roleName":"admin"},{"userRoleId":1002,"user":"0x1","roleName":"coordinator"}],"userHobbies":[{"userHobbyId":1001,"user":"0x1","hobby":"reading","createdBy":"c","createdOn":"2015-08-09T00:00:00.000Z"},{"userHobbyId":1002,"user":"0x1","hobby":"hiking","createdBy":"c","createdOn":"2016-08-09T00:00:00.000Z"},{"userHobbyId":1003,"user":"0x1","hobby":"singing","createdBy":"c","createdOn":"2013-08-09T00:00:00.000Z"}],"userPhones":[{"userPhoneId":1001,"user":"0x1","type":"apple","phoneNumber":"1233","createdBy":"a","createdOn":"2005-08-09T00:00:00.000Z"},{"userPhoneId":1002,"user":"0x1","type":"s","phoneNumber":"2343","createdBy":"a","createdOn":"2006-08-09T00:00:00.000Z"},{"userPhoneId":1003,"user":"0x1","type":"n","phoneNumber":"3453","createdBy":"a","createdOn":"2009-08-09T00:00:00.000Z"}]}';
+    //ItemJSON = '{"userId":1000,"userName":"d","password":"4","email":"d@e","userRoles":[{"userRoleId":1000,"user":"0x1","roleName":"labler"},{"userRoleId":1001,"user":"0x1","roleName":"admin"},{"userRoleId":1002,"user":"0x1","roleName":"coordinator"}],"userHobbies":[{"userHobbyId":1001,"user":"0x1","hobby":"reading","createdBy":"c","createdOn":"2015-08-09T00:00:00.000Z"},{"userHobbyId":1002,"user":"0x1","hobby":"hiking","createdBy":"c","createdOn":"2016-08-09T00:00:00.000Z"},{"userHobbyId":1003,"user":"0x1","hobby":"singing","createdBy":"c","createdOn":"2013-08-09T00:00:00.000Z"}],"userPhones":[{"userPhoneId":1001,"user":"0x1","type":"apple","phoneNumber":"1233","createdBy":"a","createdOn":"2005-08-09T00:00:00.000Z"},{"userPhoneId":1002,"user":"0x1","type":"s","phoneNumber":"2343","createdBy":"a","createdOn":"2006-08-09T00:00:00.000Z"},{"userPhoneId":1003,"user":"0x1","type":"n","phoneNumber":"3453","createdBy":"a","createdOn":"2009-08-09T00:00:00.000Z"}]}';
+    //ItemJSON = '{"userId":1000}';
+    ItemJSON = '{"userId":1000,"userName":"d","password":"4","email":"d@e","userRoles":[{"userRoleId":1000,"user":"0x1","roleName":"labler"},{"userRoleId":1001,"user":"0x1","roleName":"admin"},{"userRoleId":1002,"user":"0x1","roleName":"coordinator"}],"userPhones":[{"userPhoneId":1001,"user":"0x1","type":"apple","phoneNumber":"1233","createdBy":"a","createdOn":"2005-08-09T00:00:00.000Z"},{"userPhoneId":1002,"user":"0x1","type":"s","phoneNumber":"2343","createdBy":"a","createdOn":"2006-08-09T00:00:00.000Z"},{"userPhoneId":1003,"user":"0x1","type":"n","phoneNumber":"3453","createdBy":"a","createdOn":"2009-08-09T00:00:00.000Z"}]}';
     var URL = "http://localhost:8080/userinfoRestfulWebService/rest/user/newuser/"  //Your URL
     
     var xhttp; 
@@ -34,7 +36,8 @@ function addNewUser() {
 function deletePhonesByUserIdAndType() {
 	var ItemJSON;
 
-    ItemJSON = '{"userId":13,"type":"n"}';
+    //ItemJSON = '{"userId":200,"type":"n"}';
+    ItemJSON = '{"userId":200}';
     	var URL = "http://localhost:8080/userinfoRestfulWebService/rest/phone/no/"  //Your URL
     var xhttp; 
 	xhttp = new XMLHttpRequest();
@@ -54,7 +57,8 @@ function deletePhonesByUserIdAndType() {
 function updatePhonesByUserIdTypePhoneNumber() {
 	var ItemJSON;
 
-    ItemJSON = '{"userId":15,"type":"apple","phoneNumber":"12345"}';
+    //ItemJSON = '{"userId":15,"type":"apple","phoneNumber":"12345"}';
+    ItemJSON = '{"userId":15}';
     	var URL = "http://localhost:8080/userinfoRestfulWebService/rest/phone/phoneinfo/"  //Your URL
     var xhttp; 
 	xhttp = new XMLHttpRequest();

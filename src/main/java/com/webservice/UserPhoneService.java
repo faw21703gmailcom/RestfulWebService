@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import com.ejb.UserManager;
 import com.ejb.UserPhoneManager;
 import com.entity.UserPhone;
 import com.google.gson.JsonElement;
@@ -32,11 +33,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.webservice.util.GsonInfoUtil;
 import com.webservice.util.GsonUtilInterface;
+import com.webservice.util.UserUtil;
 
 
 /**
- * A simple REST service which is able to say hello to someone using HelloService Please take a look at the web.xml where JAX-RS
- * is enabled
+ * A simple REST service to manager user phone information with JAX-RS
  */
 
 @Path("/phone")
@@ -64,17 +65,33 @@ public class UserPhoneService {
     @Consumes({ "application/json" })
     public Response deletePhoneByUserIdAndType(String phoneJson) {
 	    	String response = "";
-	    	UserPhoneManager userPhoneManager = new UserPhoneManager();
-    		JsonElement jsonElement = new JsonParser().parse(phoneJson);
+	    JsonElement jsonElement = new JsonParser().parse(phoneJson);
     		JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-    		String userId = getJsonAttribute(jsonObject, "userId");
-    		String phoneType = getJsonAttribute(jsonObject, "type");
+    		String userId = UserUtil.getJsonAttribute(jsonObject, "userId");
+    		String phoneType = UserUtil.getJsonAttribute(jsonObject, "type");
     		
-    		userPhoneManager.deletePhoneByUserIdAndPhoneType(userId, phoneType);
-    		
-        return Response.ok(response).build();
+    		if (userId != null && phoneType != null) {
+    			UserPhoneManager userPhoneManager = new UserPhoneManager();
+	    		response = userPhoneManager.deletePhoneByUserIdAndPhoneType(userId, phoneType);
+	    		return Response.ok(UserUtil.jsonBuilder(response)).build();
+	    	}
+	    	else {
+	    		response = "Information provided for the new user is not sufficient";
+	    		
+	    		response = "Need information for ";
+    			
+    			if (userId == null)
+    				response += "use id   ";
+    			
+    			if (phoneType == null)
+    				response += "phone type  ";
+    			
+	    		return Response.status(403).type("text/plain")
+	                    .entity(UserUtil.jsonBuilder(response)).build();
+	    	}
     }
+    
     
     @POST
     @Path("phoneinfo")
@@ -86,20 +103,32 @@ public class UserPhoneService {
     		JsonElement jsonElement = new JsonParser().parse(phoneJson);
     		JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-    		String userId = getJsonAttribute(jsonObject, "userId");
-    		String phoneType = getJsonAttribute(jsonObject, "type");
-    		String phoneNumber = getJsonAttribute(jsonObject, "phoneNumber");
+    		String userId = UserUtil.getJsonAttribute(jsonObject, "userId");
+    		String phoneType = UserUtil.getJsonAttribute(jsonObject, "type");
+    		String phoneNumber = UserUtil.getJsonAttribute(jsonObject, "phoneNumber");
     		
-    		response = userPhoneManager.updatePhone(userId, phoneType, phoneNumber);
-    		
-        return Response.ok(response).build();
+    		if (userId != null && phoneType != null && phoneNumber != null) {
+    			response = userPhoneManager.updatePhone(userId, phoneType, phoneNumber);
+    			return Response.ok(UserUtil.jsonBuilder(response)).build();
+    		}
+    		else {
+    			response = "Need information for ";
+    			
+    			if (userId == null)
+    				response += "use id   ";
+    			
+    			if (phoneType == null)
+    				response += "phone type   ";
+    			
+    			if (phoneNumber == null)
+    				response += "phone number   ";
+    			
+    			return Response.status(403).type("text/plain")
+	                    .entity(UserUtil.jsonBuilder(response)).build();
+    		}
+
     }
     
-    private String getJsonAttribute(JsonObject jsonObject, String attr) {
-    		String value = null;
-    		JsonElement jsonUserId = jsonObject.get(attr);
-    		value = jsonUserId.getAsString();
-		return value;
-    }
+    
 
 }

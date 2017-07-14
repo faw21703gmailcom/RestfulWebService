@@ -28,11 +28,11 @@ import com.ejb.UserHobbyManager;
 import com.entity.UserHobby;
 import com.webservice.util.GsonInfoUtil;
 import com.webservice.util.GsonUtilInterface;
+import com.webservice.util.UserUtil;
 
 
 /**
- * A simple REST service which is able to say hello to someone using HelloService Please take a look at the web.xml where JAX-RS
- * is enabled
+ * A simple REST service to manager user hobby information with JAX-RS
  */
 
 @Path("/hobby")
@@ -62,9 +62,14 @@ public class UserHobbyService {
     		
     		UserHobbyManager userHobbyManager = new UserHobbyManager();
     		List<UserHobby> hobbies = userHobbyManager.getUserHobbyByUserId(userId);
-        
-    	 	GsonUtilInterface gUtil = new GsonInfoUtil();
-	    	response = gUtil.toJsonString(hobbies);
+
+	    	if (hobbies != null && hobbies.size() > 0) {
+	    		GsonUtilInterface gUtil = new GsonInfoUtil();
+	    		response = gUtil.toJsonString(hobbies);
+	    	}
+	    	else {
+	    		response = UserUtil.jsonBuilder("Hobby for the user whose userId is '" + userId + "' does not exist.");
+	    	}
 	    	
 	    return Response.ok(response).build();
     }
